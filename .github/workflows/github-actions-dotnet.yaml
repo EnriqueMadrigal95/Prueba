@@ -1,0 +1,21 @@
+name: GitHub Actions
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/*'
+  pull_request:
+    branches:
+      - main
+      - 'release/*'
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code ('${{ github.repository}}' cloned to the runner)
+        uses: actions/checkout@v3
+
+     
