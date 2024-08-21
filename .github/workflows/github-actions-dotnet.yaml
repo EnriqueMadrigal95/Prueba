@@ -13,6 +13,8 @@ on:
 jobs:
   build-and-test:
     runs-on: windows-latest
+    # Configuración para evitar que la ejecución exceda los 10 minutos
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code ('${{ github.repository}}' cloned to the runner)
@@ -23,4 +25,28 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-    
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build the project
+        run: dotnet build --configuration Release --no-restore
+        
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
+
+  notify:
+    runs-on: windows-latest
+    needs: build-and-test
+    # Configuración para evitar que la ejecución exceda los 10 minutos
+    timeout-minutes: 10
+
+    steps:
+      - name: Notify on success
+        if: success()
+        run: echo "CI passed!" # Aquí se puede integrar un servicio de notificaciones como Slack, Teams, o correo.
+
+      - name: Notify on failure
+        if: failure()
+        run: echo "CI failed!" # Igual, se puede notificar sobre el fallo.
+
+
