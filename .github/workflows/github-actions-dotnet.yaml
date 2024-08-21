@@ -18,7 +18,7 @@ jobs:
       - name: Checkout code ('${{ github.repository}}' cloned to the runner)
         uses: actions/checkout@v3
         
-      - name: Setup .NET Core
+      - name: Setup .NET Core 8.0.x
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
